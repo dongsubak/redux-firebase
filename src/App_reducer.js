@@ -15,6 +15,49 @@ export const board_list = createAction(BOARD_LIST);
 //export const board_read  = (brdno) => ({ type: BOARD_READ, brdno: brdno });
 //export const board_list = () => ({ type: BOARD_LIST });
 
+export const firebase_board_list = () => {
+    return (dispatch) => {
+        return firestore.collection('boards').orderBy("brddate","desc").get()
+            .then((snapshot) => {
+                var rows = [];
+                snapshot.forEach((doc) => {
+                    var childData = doc.data();
+                    childData.brddate = dateFormat(childData.brddate, "yyyy-mm-dd");
+                    rows.push(childData);
+                });
+                dispatch(board_list(rows));
+            })
+    }
+}
+
+export const firebase_board_remove = ( brdno = {} ) => {
+    return (dispatch) => {
+        console.log(brdno);
+        return firestore.collection('boards').doc(brdno).delete().then(() => {
+            dispatch(board_remove(brdno));
+        })
+
+    }
+}
+
+export const firebase_board_save = ( data = {}) => {
+    return (dispatch) => {
+        if (!data.brdno) {
+            var doc = firestore.collection('boards').doc();
+            data.brdno = doc.id;
+            data.brddate = Date.now();
+            return doc.set(data).then(() => {
+                data.brddate = dateFormat(data.brddate, "yyyy-mm-dd");
+                dispatch(board_save(data));
+            })
+        } else {
+            return firestore.collection('boards').doc(data.brdno).update(data).then(() => {
+                dispatch(board_save(data));
+            })            
+        }
+    }
+};
+    
 const initialState = {
     maxNo: 3,
     boards: [
@@ -61,10 +104,12 @@ export default function board_reducer(state = initialState, action) {
 */
 
 export default handleActions({
+    [BOARD_LIST]: (state, { payload: data }) => {
+        return {boards: data, selectedBoard: {} };
+    },
     [BOARD_SAVE]: (state, { payload: data }) => {
         let boards = state.boards;
 
-        
         let maxNo = state.maxNo;
             if (!data.brdno) { // new data Insert
                 return { maxNo: maxNo+1, boards: boards.concat({...data, brdno: maxNo, brddate: new Date()}), selectedBoard: {} };
