@@ -1,4 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
+import firestore from './Firestore';
 
 const BOARD_SAVE ='SAVE';
 const BOARD_REMOVE = 'REMOVE';
@@ -13,7 +14,6 @@ export const board_list = createAction(BOARD_LIST);
 //export const board_remove = (brdno) => ({ type: BOARD_REMOVE, brdno: brdno });
 //export const board_read  = (brdno) => ({ type: BOARD_READ, brdno: brdno });
 //export const board_list = () => ({ type: BOARD_LIST });
-
 
 const initialState = {
     maxNo: 3,
