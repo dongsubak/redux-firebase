@@ -40,9 +40,9 @@ export const firebase_board_remove = ( brdno = {} ) => {
     }
 }
 
-export const firebase_board_save = ( data = {}) => {
+export const firebase_board_save = ( data = {} ) => {
     return (dispatch) => {
-        if (!data.brdno) {
+        if(!data.brdno) {
             var doc = firestore.collection('boards').doc();
             data.brdno = doc.id;
             data.brddate = Date.now();
@@ -53,7 +53,7 @@ export const firebase_board_save = ( data = {}) => {
         } else {
             return firestore.collection('boards').doc(data.brdno).update(data).then(() => {
                 dispatch(board_save(data));
-            })            
+            })
         }
     }
 };
