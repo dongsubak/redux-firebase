@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { board_save } from './App_reducer';
+import { firebase_board_save } from './App_reducer';
 
 class BoardForm extends Component {
     state = {};
@@ -17,7 +17,7 @@ class BoardForm extends Component {
     }
 
     handleSave = () => {
-        this.props.dispatch(board_save(this.state));
+        this.props.dispatch(firebase_board_save(this.state));
         this.setState (this.initialSelectedBoard);
     }
 
