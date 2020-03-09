@@ -60,8 +60,9 @@ export const firebase_board_save = ( data = {} ) => {
 };
     
 const initialState = {
-    maxNo: 3,
+    // maxNo: 3,
     boards: [
+        /*
         {
             brdno: 1,
             brdwriter: 'Lee SunSin',
@@ -74,6 +75,7 @@ const initialState = {
             brdtitle: 'Founder for two countries',
             brddate: new Date()
         },
+        */
     ],
     selectedBoard: {}
 };
